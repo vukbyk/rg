@@ -39,6 +39,12 @@ void GLWidget::paintGL()
 //        glVertex3f( -0.5  ,  0.5, .1);
 //    glEnd();
 
+    floor.put();
+//    glColor3f(1,1,0);
+//    glBegin(GL_LINES);
+//        glVertex3f(-10, 0, 0);
+//        glVertex3f(10, 0, 0);
+//    glEnd();
     glRotatef(.5,.25, .125, 1);
     glColor3f(0.5,0.0,0.5);
     glutSolidTeapot(.6);

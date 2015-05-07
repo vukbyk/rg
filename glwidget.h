@@ -4,6 +4,8 @@
 #include <QGLWidget>
 #include <QTimer>
 
+#include "floorgrid.h"
+
 class GLWidget : public QGLWidget
 {
     Q_OBJECT
@@ -15,6 +17,7 @@ public:
     void resizeGL(int w, int h);
 private:
     QTimer timer;
+    floorGrid floor;
 
 /*signals:
 
