@@ -2,11 +2,14 @@
 #include <GL/glut.h>
 #include <GL/glu.h>
 
+#include <iostream>
+
 GLWidget::GLWidget(QWidget *parent) :
     QGLWidget(parent)
 {
     connect(&timer, SIGNAL(timeout()),this, SLOT(updateGL()));
     timer.start(25);
+//    elapsedT.start();
 }
 
 void GLWidget::initializeGL()
@@ -45,9 +48,12 @@ void GLWidget::paintGL()
 //        glVertex3f(-10, 0, 0);
 //        glVertex3f(10, 0, 0);
 //    glEnd();
-    glRotatef(.5,.25, .125, 1);
-    glColor3f(0.5,0.0,0.5);
+    glColor3f(0.5,0.0,0);
+    rotation+=5;
+    glPushMatrix();
+    glRotatef(rotation,rotation/2, rotation/4, 1);
     glutSolidTeapot(.6);
+    glPopMatrix();
 }
 
 void GLWidget::resizeGL(int w, int h)
@@ -58,6 +64,7 @@ void GLWidget::resizeGL(int w, int h)
     gluPerspective(45, (float)w/h, 0.01,100.0);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    gluLookAt(0,0,5, 0,0,0, 0,1,0);
+    gluLookAt(1,2,10, 0,0,0, 0,1,0);
 }
+
 

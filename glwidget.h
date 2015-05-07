@@ -3,6 +3,7 @@
 
 #include <QGLWidget>
 #include <QTimer>
+//#include <QElapsedTimer>
 
 #include "floorgrid.h"
 
@@ -15,9 +16,17 @@ public:
     void initializeGL();
     void paintGL();
     void resizeGL(int w, int h);
+
 private:
     QTimer timer;
+
+//    QElapsedTimer elapsedT;
+//    qint64 lastTime = 0;
+//    int dt;
+
     floorGrid floor;
+
+    float rotation;
 
 /*signals:
 
