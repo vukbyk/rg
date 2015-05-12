@@ -13,13 +13,15 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
+    mainwindow.cpp \
     glwidget.cpp \
-    floorgrid.cpp
+    floorgrid.cpp \
+    vobject.cpp
 
 HEADERS  += mainwindow.h \
     glwidget.h \
-    floorgrid.h
+    floorgrid.h \
+    vobject.h
 
 FORMS    += mainwindow.ui
 
