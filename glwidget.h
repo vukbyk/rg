@@ -28,10 +28,12 @@ private:
 
     float rotation;
 
-/*signals:
+    void keyPressEvent(QKeyEvent*);
 
-public slots:
-*/
+//signals:
+
+//public slots:
+
 };
 
 #endif // GLWIDGET_H

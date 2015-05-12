@@ -1,6 +1,8 @@
 #ifndef FLOORGRID_H
 #define FLOORGRID_H
 
+#include "vobject.h"
+
 class floorGrid
 {
 private:
