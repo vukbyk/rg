@@ -29,6 +29,8 @@ floorGrid::floorGrid(float rr, float gg, float bb)
 
 void floorGrid::put()
 {
+    glDisable(GL_TEXTURE_2D);
+    glDisable(GL_BLEND);
     glColor3f(r,g,b);
 //    std::cout<<"rgb: "<<r<<g<<b<<std::endl;
     glLineWidth(3);

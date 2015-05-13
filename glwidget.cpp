@@ -37,17 +37,18 @@ void GLWidget::paintGL()
 
     vec3 v(2,2,2);
 
-    vObject o(vec3(0,0,0),v);
-
-    //rotation+=2.5;
-    glPushMatrix();
-        glRotatef(rotation, 0, 1, 0);
-        glTranslatef(o.p.x,o.p.y,o.p.z);
-//        glutSolidTeapot(.6);
-        glColor3f(0.5,0.0,0);
-        glutSolidCube(.6);
-    glPopMatrix();
+    vObject o[10];
+    for (int i=0; i<10;i++)
+    {
+        o[i].setPosition(vec3(i,0,0));
+    }
+//    rotation+=2.5;
     floor.put();
+    glMatrixMode(GL_MODELVIEW);
+    for (int i=0; i<10;i++)
+    {       
+        o[i].put();
+    }
 }
 
 void GLWidget::resizeGL(int w, int h)
@@ -56,9 +57,9 @@ void GLWidget::resizeGL(int w, int h)
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluPerspective(45, (float)w/h, 0.01,100.0);
+    gluLookAt(1,2,5, 0,0,0, 0,1,0);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    gluLookAt(1,2,5, 0,0,0, 0,1,0);
 }
 
 void GLWidget::keyPressEvent(QKeyEvent *k)
