@@ -5,7 +5,13 @@
 #include <QTimer>
 //#include <QElapsedTimer>
 
+#include <GL/glut.h>
+#include <GL/glu.h>
+
+#include "vobject.h"
+#include "camera.h"
 #include "floorgrid.h"
+#include "cube.h"
 
 class GLWidget : public QGLWidget
 {
@@ -18,18 +24,26 @@ public:
     void resizeGL(int w, int h);
 
 private:
+
+    float lastRotateX, lastRotateY, lastRotateZ;
+
     QTimer timer;
+    bool pressedKeys[256];
 
 //    QElapsedTimer elapsedT;
 //    qint64 lastTime = 0;
 //    int dt;
 
-    floorGrid floor;
-
     float rotation;
+    camera cam;
+    cube o[10];
+//    floorGrid floor;
 
+    void keyReleaseEvent(QKeyEvent *event);
     void keyPressEvent(QKeyEvent*);
 
+    void mouseMoveEvent(QMouseEvent *event);
+    void mousePressEvent(QMouseEvent *event);
 //signals:
 
 //public slots:

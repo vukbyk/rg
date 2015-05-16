@@ -16,12 +16,16 @@ SOURCES += main.cpp\
     mainwindow.cpp \
     glwidget.cpp \
     floorgrid.cpp \
-    vobject.cpp
+    vobject.cpp \
+    camera.cpp \
+    cube.cpp
 
 HEADERS  += mainwindow.h \
     glwidget.h \
     floorgrid.h \
-    vobject.h
+    vobject.h \
+    camera.h \
+    cube.h
 
 FORMS    += mainwindow.ui
 

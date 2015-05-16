@@ -1,7 +1,4 @@
 #include "floorgrid.h"
-#include <GL/glut.h>
-#include <GL/glu.h>
-#include <iostream>
 
 floorGrid::floorGrid()
 {
@@ -29,6 +26,9 @@ floorGrid::floorGrid(float rr, float gg, float bb)
 
 void floorGrid::put()
 {
+//    this->setPosition(glm::vec3(3,0,0));
+//    glMatrixMode(GL_MODELVIEW);
+    glLoadMatrixf(&transforamtion[0][0]);
     glDisable(GL_TEXTURE_2D);
     glDisable(GL_BLEND);
     glColor3f(r,g,b);

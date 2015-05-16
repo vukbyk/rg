@@ -1,24 +1,34 @@
 #include "glwidget.h"
-#include "vobject.h"
-
-#include <GL/glut.h>
-#include <GL/glu.h>
-//#include <glm/vec3.hpp>
 
 #include <QKeyEvent>
-
 #include <iostream>
 
 using namespace glm;
+using namespace std;
 
-GLWidget::GLWidget(QWidget *parent) :
-    QGLWidget(parent)
+GLWidget::GLWidget(QWidget *parent) : QGLWidget(parent)
 {
     connect(&timer, SIGNAL(timeout()),this, SLOT(updateGL()));
     timer.start(25);
 //    elapsedT.start();
-
+    lastRotateX=lastRotateY=lastRotateZ=-1;
+    rotation=0;
     setFocusPolicy(Qt::StrongFocus);
+
+    for(int i =0; i < 256; i++)
+    {
+        pressedKeys[i] = false;
+    }
+
+//    cam.setAspect(size().width(), size().height());
+    cam.setAngle(60);
+//    cam.lookAt(vec3(0.f,2.f,5.f), vec3(0.f,0.f,0.f), vec3(0.f,1.f,0.f));
+
+    for (int i=0; i<10;i++)
+    {
+        o[i].setPosition(vec3(i,0,0));
+    }
+
 }
 
 void GLWidget::initializeGL()
@@ -33,45 +43,70 @@ void GLWidget::initializeGL()
 void GLWidget::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    using namespace glm;
+    glMatrixMode(GL_MODELVIEW);
 
-    vec3 v(2,2,2);
+    floorGrid floor;
+    floor.put();
 
-    vObject o[10];
+//    cube o[10];
+//    for (int i=0; i<10;i++)
+//    {
+//        o[i].setPosition(vec3(i,0,0));
+//    }
+
+//    rotation+=2.5;
     for (int i=0; i<10;i++)
     {
-        o[i].setPosition(vec3(i,0,0));
-    }
-//    rotation+=2.5;
-    floor.put();
-    glMatrixMode(GL_MODELVIEW);
-    for (int i=0; i<10;i++)
-    {       
+//        o[i].setRotation(/*rotation*/2.5, vec3(.1,0,0));
         o[i].put();
+//        o[i].input(pressedKeys);
     }
+    glMatrixMode(GL_PROJECTION);
+    cam.put();
+    cam.keyEvent(pressedKeys);
+//    vObject k;
+//    k.setPosition(vec3(-1.f,0,0));
+//    k.lookAt(vec3(1.f,-2.f,0.f), vec3(0.f,0.f,0.f), vec3(0.f,1.f,1.f));
+//    k.put();
 }
 
 void GLWidget::resizeGL(int w, int h)
 {
-    glViewport(0,0,w,h);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluPerspective(45, (float)w/h, 0.01,100.0);
-    gluLookAt(1,2,5, 0,0,0, 0,1,0);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
+    cam.setAspect(w,h);
 }
 
-void GLWidget::keyPressEvent(QKeyEvent *k)
+void GLWidget::keyPressEvent(QKeyEvent *event)
 {
-    switch (k->key())
+    int currKey = event->key();
+    if(currKey >= 0 && currKey < 256)
     {
-    case Qt::Key_W:
-        rotation++;
-        break;
-    default:
-        break;
+        pressedKeys[event->key()] = true;
     }
-    update();
-    repaint();
 }
+
+void GLWidget::mousePressEvent(QMouseEvent *event)
+{
+    lastRotateX=event->x();
+    lastRotateY=event->y();
+}
+
+void GLWidget::mouseMoveEvent(QMouseEvent *event)
+{
+    if (event->buttons() & Qt::LeftButton)
+    {
+        cam.setRotation((event->x()-lastRotateX)*.5, vec3(0,1,0));
+        cam.setRotation((event->y()-lastRotateY)*.5, vec3(1,0,0));
+        lastRotateX=event->x();
+        lastRotateY=event->y();
+    }
+}
+
+void GLWidget::keyReleaseEvent(QKeyEvent *event)
+{
+    int currKey = event->key();
+    if(currKey >= 0 && currKey < 256)
+    {
+       pressedKeys[event->key()] = false;
+    }
+}
+

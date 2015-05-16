@@ -3,7 +3,7 @@
 
 #include "vobject.h"
 
-class floorGrid
+class floorGrid : public vObject
 {
 private:
     int span;
