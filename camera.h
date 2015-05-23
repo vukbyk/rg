@@ -9,11 +9,17 @@ class camera : public vObject
 public:
     camera();
     camera(float a, float n, float f);
-    void put();
+    void draw();
     void lookAt(glm::vec3 eye, glm::vec3 center, glm::vec3 up);
     void setAspect(int w, int h);
 
-    void keyEvent(bool pressedKeys[]);
+    glm::mat4x4 getTM();
+    void setTM();
+
+    virtual void rotate(glm::vec3 rot);
+    virtual void translate(glm::vec3 position) override;
+
+    void keyEvent(bool pressedKeys[], int mp=-1) override;
 
     float getAngle() const;
     void setAngle(float value);
@@ -27,6 +33,7 @@ public:
     void setWidth(int value);
     int getHeight() const;
     void setHeight(int value);
+
 };
 
 #endif // CAMERA_H

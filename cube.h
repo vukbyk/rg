@@ -7,7 +7,7 @@ class cube : public vObject
 {
 public:
     cube();
-    void put();
+    void draw();
 };
 
 #endif // CUBE_H

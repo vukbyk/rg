@@ -1,13 +1,40 @@
 #include "cube.h"
 
+
 cube::cube()
 {
 }
 
-void cube::put()
+void cube::draw()
 {
-//    glLoadIdentity();
-    glLoadMatrixf(&transforamtion[0][0]);
-    glColor3f(0.5, 0.0 ,0);
-    glutSolidCube(.6);
+//    glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+        glPushMatrix();
+//        glLoadMatrixf(&mat[0][0]);
+//        glLoadMatrixf(&tm[0][0]);
+//            glTranslated(getPosition().x, getPosition().y, getPosition().z);
+//            glRotatef(yaw, 1,0,0);
+//            glRotatef(roll, 0,0,1);
+//            glRotatef(pitch, 0,1,0);
+            glColor3f(0.5, 0.0 ,0);
+            glutSolidCube(.5);
+            glTranslated(1, 0, 0);
+            glutSolidCube(.5);
+            glTranslated(0, 0, 1);
+            glutSolidCube(.5);
+            glTranslated(-1, 0, 0);
+            glutSolidCube(.5);
+            glTranslated(-1, 0, 0);
+            glutSolidCube(.5);
+            glTranslated(0, 0, -1);
+            glutSolidCube(.5);
+            glTranslated(0, 0, -1);
+            glutSolidCube(.5);
+            glTranslated(1, 0, 0);
+            glutSolidCube(.5);
+            glTranslated(1, 0, 0);
+            glutSolidCube(.5);
+            glTranslated(-1, 0, -1);
+            glutSolidCube(.5);
+        glPopMatrix();
 }

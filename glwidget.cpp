@@ -15,19 +15,23 @@ GLWidget::GLWidget(QWidget *parent) : QGLWidget(parent)
     rotation=0;
     setFocusPolicy(Qt::StrongFocus);
 
+    mouseX=mouseY=0;
     for(int i =0; i < 256; i++)
     {
         pressedKeys[i] = false;
     }
+//    k.p.z=-1;
+//    k.tm[3][2]=-1;
 
-//    cam.setAspect(size().width(), size().height());
     cam.setAngle(60);
+    cam.translate(vec3(0,0,0));
+
 //    cam.lookAt(vec3(0.f,2.f,5.f), vec3(0.f,0.f,0.f), vec3(0.f,1.f,0.f));
 
-    for (int i=0; i<10;i++)
-    {
-        o[i].setPosition(vec3(i,0,0));
-    }
+//    for (int i=0; i<10;i++)
+//    {
+//        o[i].translate(vec3(i,0,-5));
+//    }
 
 }
 
@@ -40,38 +44,31 @@ void GLWidget::initializeGL()
     glEnable(GL_COLOR_MATERIAL);
 }
 
+
 void GLWidget::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glMatrixMode(GL_MODELVIEW);
 
-    floorGrid floor;
-    floor.put();
+//    glLoadIdentity();
 
-//    cube o[10];
-//    for (int i=0; i<10;i++)
-//    {
-//        o[i].setPosition(vec3(i,0,0));
-//    }
 
-//    rotation+=2.5;
-    for (int i=0; i<10;i++)
-    {
-//        o[i].setRotation(/*rotation*/2.5, vec3(.1,0,0));
-        o[i].put();
-//        o[i].input(pressedKeys);
-    }
-    glMatrixMode(GL_PROJECTION);
-    cam.put();
+    k.draw();
     cam.keyEvent(pressedKeys);
-//    vObject k;
-//    k.setPosition(vec3(-1.f,0,0));
-//    k.lookAt(vec3(1.f,-2.f,0.f), vec3(0.f,0.f,0.f), vec3(0.f,1.f,1.f));
-//    k.put();
+    cam.mouseEvent(mouseX, mouseY);
+    cam.draw();
+
+    glPushMatrix();
+    glColor3f(0.5, 5.0 ,0);
+    glutSolidCube(.5);
+    glPopMatrix();
+//    k.keyEvent(pressedKeys);
+
+
 }
 
 void GLWidget::resizeGL(int w, int h)
 {
+    glViewport(0.f, 0.f , w, h);
     cam.setAspect(w,h);
 }
 
@@ -94,10 +91,12 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event)
 {
     if (event->buttons() & Qt::LeftButton)
     {
-        cam.setRotation((event->x()-lastRotateX)*.5, vec3(0,1,0));
-        cam.setRotation((event->y()-lastRotateY)*.5, vec3(1,0,0));
-        lastRotateX=event->x();
+        cam.rotate(vec3(radians((event->y()-lastRotateY)*.5), 0, 0));
+        cam.rotate(vec3(0, radians((event->x()-lastRotateX)*.5), 0));
+//        mouseX=event->x()-lastRotateX;
+//        mouseY=event->y()-lastRotateY;
         lastRotateY=event->y();
+        lastRotateX=event->x();
     }
 }
 

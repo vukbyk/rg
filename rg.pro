@@ -11,6 +11,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = rg
 TEMPLATE = app
 
+INCLUDEPATH += /usr/include/bullet
 
 SOURCES += main.cpp\
     mainwindow.cpp \
@@ -25,8 +26,14 @@ HEADERS  += mainwindow.h \
     floorgrid.h \
     vobject.h \
     camera.h \
-    cube.h
+    cube.h \
+
+LIBS     += -lglut -lGLU \
+    -lBulletDynamics \
+    -lBulletCollision \
+    -lBulletSoftBody \
+    -lLinearMath
 
 FORMS    += mainwindow.ui
 
-LIBS     += -lglut -lGLU
+

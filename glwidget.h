@@ -29,6 +29,7 @@ private:
 
     QTimer timer;
     bool pressedKeys[256];
+    float mouseX, mouseY;
 
 //    QElapsedTimer elapsedT;
 //    qint64 lastTime = 0;
@@ -36,7 +37,8 @@ private:
 
     float rotation;
     camera cam;
-    cube o[10];
+    cube k;
+//    cube o[10];
 //    floorGrid floor;
 
     void keyReleaseEvent(QKeyEvent *event);

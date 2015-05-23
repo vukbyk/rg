@@ -13,6 +13,6 @@ public:
     floorGrid(int s, float rr, float gg, float bb);
     floorGrid(float rr, float gg, float bb);
 
-    void put();
+    void draw();
 };
 #endif // FLOORGRID_H
