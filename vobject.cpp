@@ -12,11 +12,11 @@ vObject::vObject()
     yaw=pitch=roll=0;
 }
 
-//void vObject::draw(){}
+//void vObject::draw();
 
 void vObject::translate(vec3 position)
 {
-//    tm=glm::translate(tm, position);
+    tm=glm::translate(tm, position);
 }
 
 void vObject::rotate(vec3 rot)
@@ -27,32 +27,42 @@ void vObject::rotate(vec3 rot)
 //    v[2]=transforamtion[3][2];
 //    transforamtion=mat4x4(1);
 
+    rot*=1;
     yaw+=rot.x;
     pitch+=rot.y;
     roll+=rot.z;
+//    if(yaw > glm::radians(85.0f))
+//        yaw =  glm::radians(85.0f);
+//    if(yaw < glm::radians(-85.0f))
+//        yaw = glm::radians(-85.0f);
 
-//    mat4x4 temp;
-//    temp=mat4x4(1);
+    cout<<"yaw  : "<< glm::degrees(yaw)<<endl;
+    cout<<"roll : "<< glm::degrees(roll)<<endl;
+    cout<<"pitch: "<< glm::degrees(pitch)<<endl<<endl;
 
-//    temp=glm::rotate(temp, yaw, vec3(1,0,0));
-//    temp=glm::rotate(temp, pitch, vec3(0,0,1));
-//    temp=glm::rotate(temp, roll, vec3(0,1,0));
-//    temp=glm::translate(temp, v);
+    mat4x4 temp(1);
 
-//    transforamtion=temp;
-//    translate(v);
-//    transforamtion*=eulerAngleX(yaw);
-//    transforamtion*=eulerAngleY(roll);
-//    transforamtion*=eulerAngleZ(pitch);
+    temp=glm::rotate(temp, pitch, vec3(0,1,0));
+    temp=glm::rotate(temp, yaw, vec3(1,0,0));
+    temp=glm::rotate(temp, roll, vec3(0,0,1));
+//    temp=glm::translate(temp, rot);
+
+    tm[0]=temp[0];
+    tm[1]=temp[1];
+    tm[2]=temp[2];
+//    translate(temp[3]);
+//    tm*=eulerAngleX(yaw);
+//    tm*=eulerAngleY(roll);
+//    tm*=eulerAngleZ(pitch);
 
 }
 
-void vObject::keyEvent(bool pressedKeys[], int mp)
+void vObject::keyEvent(bool pressedKeys[])
 {
     for(int i =0; i< 256; i++)
     {
-        float mov=0.1f*mp;
-        float ang=radians(1.f*mp);
+        float mov=0.1f;
+        float ang=radians(1.f);
         if(pressedKeys[i])
 //            cout << "Key: "<<(char) (i)<< endl;
         switch ((char)(i))
@@ -112,7 +122,7 @@ void vObject::keyEvent(bool pressedKeys[], int mp)
 
 void vObject::mouseEvent(float x, float y)
 {
-//    this->rotate(vec3(radians(x) ,0.f ,radians(y)));
+    this->rotate(vec3(radians(x) ,0.f ,radians(y)));
 }
 
 glm::vec3 vObject::getOrientation() const
@@ -127,7 +137,7 @@ glm::mat4x4 vObject::getTM() const
 
 void vObject::setTM(const glm::mat4x4 &value)
 {
-//    tm = value;
+    tm = value;
 }
 
 void vObject::setOrientation(glm::vec3 axis)

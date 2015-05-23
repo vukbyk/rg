@@ -57,18 +57,18 @@ glm::mat4x4 camera::getTM()
 {
 //    setTransforamtion();
 
-    cout<<"t: "<< tm[0][0]<<endl;
-    cout<<"t: "<< tm[0][1]<<endl;
-    cout<<"t: "<< tm[0][2]<<endl;
-    cout<<"t: "<< tm[1][0]<<endl;
-    cout<<"t: "<< tm[1][1]<<endl;
-    cout<<"t: "<< tm[1][2]<<endl;
-    cout<<"t: "<< tm[2][0]<<endl;
-    cout<<"t: "<< tm[2][1]<<endl;
-    cout<<"t: "<< tm[2][2]<<endl;
-    cout<<"x: "<< tm[3][0]<<endl;
-    cout<<"y: "<< tm[3][1]<<endl;
-    cout<<"z: "<< tm[3][2]<<endl<<endl;
+//    cout<<"t: "<< tm[0][0]<<endl;
+//    cout<<"t: "<< tm[0][1]<<endl;
+//    cout<<"t: "<< tm[0][2]<<endl;
+//    cout<<"t: "<< tm[1][0]<<endl;
+//    cout<<"t: "<< tm[1][1]<<endl;
+//    cout<<"t: "<< tm[1][2]<<endl;
+//    cout<<"t: "<< tm[2][0]<<endl;
+//    cout<<"t: "<< tm[2][1]<<endl;
+//    cout<<"t: "<< tm[2][2]<<endl;
+//    cout<<"x: "<< tm[3][0]<<endl;
+//    cout<<"y: "<< tm[3][1]<<endl;
+//    cout<<"z: "<< tm[3][2]<<endl<<endl;
 
 //    return transforamtion;
 
@@ -79,6 +79,8 @@ glm::mat4x4 camera::getTM()
     temp=glm::rotate(temp, pitch, vec3(0,1,0));
     tm[3]+=temp[3];
     temp=glm::translate(temp, getPosition());
+//    temp=glm::translate(temp, vec3(tm[3][0], tm[3][1], tm[3][2]));
+
 //    tm=temp;
 //    return tm;
     return temp;
@@ -92,7 +94,9 @@ void camera::setTM()
     temp=glm::rotate(temp, roll, vec3(0,0,1));
     temp=glm::rotate(temp, pitch, vec3(0,1,0));
     tm[3]+=temp[3];
-    temp=glm::translate(temp, getPosition());
+//    temp=glm::translate(temp, getPosition());
+    temp=glm::translate(temp, vec3(tm[3][0], tm[3][1], tm[3][2]));
+
     tm=temp;
 }
 
@@ -101,15 +105,15 @@ void camera::rotate(vec3 rot)
     rot*=.1;
     yaw+=rot.x;
     pitch+=rot.y;
-    pitch+=rot.z;
-    if(pitch > 89.0f)
-      pitch =  89.0f;
-    if(pitch < -89.0f)
-      pitch = -89.0f;
+    roll+=rot.z;
+    if(yaw > glm::radians(85.0f))
+        yaw =  glm::radians(85.0f);
+    if(yaw < glm::radians(-85.0f))
+        yaw = glm::radians(-85.0f);
 
-    cout<<"yaw  : "<< yaw<<endl;
-    cout<<"roll : "<< roll<<endl;
-    cout<<"pitch: "<< pitch<<endl<<endl;
+//    cout<<"yaw  : "<< glm::degrees(yaw)<<endl;
+//    cout<<"roll : "<< glm::degrees(roll)<<endl;
+//    cout<<"pitch: "<< glm::degrees(pitch)<<endl<<endl;
 
 //    vec4 temp;
 //    temp=transforamtion[3];
@@ -142,14 +146,57 @@ void camera::translate(vec3 position)
 //    transforamtion[3][2]+=temp[3][2];
 }
 
-void camera::keyEvent(bool pressedKeys[], int mp)
+void camera::keyEvent(bool pressedKeys[])
 {
-    vObject::keyEvent( pressedKeys, mp);
+    for(int i =0; i< 256; i++)
+    {
+        float mov=0.1f;
+//        float ang=radians(1.f);
+        if(pressedKeys[i])
+//            cout << "Key: "<<(char) (i)<< endl;
+        switch ((char)(i))
+        {
+        case '+':
+            translate(vec3(0.f, .0f, -mov));
+            break;
+        case '-':
+            translate(vec3(0.f, .0f, mov));
+            break;
+//        case 'D':
+//            translate(vec3(mov, 0.f, 0.f));
+//            break;
+//        case 'A':
+            translate(vec3(-mov, 0.f, 0.f));
+            break;
+//        case 'R':
+//            translate(vec3(0.f, mov, 0.f));
+//            break;
+//        case 'F':
+//            translate(vec3(0.f, -mov, 0.f));
+//            break;
+//        case 'Y':
+//            rotate(vec3(ang, 0.f, 0.f));
+//            break;
+//        case 'H':
+//            rotate(vec3(-ang, 0.f, 0.f));
+//            break;
+//        case 'G':
+//            rotate(vec3(0.f, ang, 0.f));
+//            break;
+//        case 'J':
+//            rotate(vec3(0.f, -ang, 0.f));
+//            break;
+//        case 'Q':
+//            rotate(vec3(0.f, 0.f, ang));
+//            break;
+//        case 'E':
+//            rotate(vec3(0.f, 0.f,-ang));
+//            break;
+        default:
+            break;
+        }
+    }
 }
-//void camera::keyEvent(bool pressedKeys[])
-//{
-//    vObject::keyEvent(pressedKeys, -1);
-//}
 
 float camera::getAngle() const
 {

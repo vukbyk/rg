@@ -35,11 +35,10 @@ private:
 //    qint64 lastTime = 0;
 //    int dt;
 
-    float rotation;
     camera cam;
     cube k;
 //    cube o[10];
-//    floorGrid floor;
+    floorGrid floor;
 
     void keyReleaseEvent(QKeyEvent *event);
     void keyPressEvent(QKeyEvent*);

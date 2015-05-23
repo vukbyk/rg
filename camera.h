@@ -19,7 +19,7 @@ public:
     virtual void rotate(glm::vec3 rot);
     virtual void translate(glm::vec3 position) override;
 
-    void keyEvent(bool pressedKeys[], int mp=-1) override;
+    void keyEvent(bool pressedKeys[]) override;
 
     float getAngle() const;
     void setAngle(float value);

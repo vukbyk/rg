@@ -12,7 +12,7 @@ GLWidget::GLWidget(QWidget *parent) : QGLWidget(parent)
     timer.start(25);
 //    elapsedT.start();
     lastRotateX=lastRotateY=lastRotateZ=-1;
-    rotation=0;
+
     setFocusPolicy(Qt::StrongFocus);
 
     mouseX=mouseY=0;
@@ -24,14 +24,8 @@ GLWidget::GLWidget(QWidget *parent) : QGLWidget(parent)
 //    k.tm[3][2]=-1;
 
     cam.setAngle(60);
-    cam.translate(vec3(0,0,0));
-
+    cam.translate(vec3(0,-1,-4));
 //    cam.lookAt(vec3(0.f,2.f,5.f), vec3(0.f,0.f,0.f), vec3(0.f,1.f,0.f));
-
-//    for (int i=0; i<10;i++)
-//    {
-//        o[i].translate(vec3(i,0,-5));
-//    }
 
 }
 
@@ -51,19 +45,12 @@ void GLWidget::paintGL()
 
 //    glLoadIdentity();
 
-
+    floor.draw();
     k.draw();
+    k.keyEvent(pressedKeys);
     cam.keyEvent(pressedKeys);
     cam.mouseEvent(mouseX, mouseY);
     cam.draw();
-
-    glPushMatrix();
-    glColor3f(0.5, 5.0 ,0);
-    glutSolidCube(.5);
-    glPopMatrix();
-//    k.keyEvent(pressedKeys);
-
-
 }
 
 void GLWidget::resizeGL(int w, int h)

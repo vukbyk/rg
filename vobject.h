@@ -23,7 +23,7 @@ public:
     void draw();
     virtual void translate(glm::vec3 position);
     virtual void rotate(glm::vec3 axis);
-    virtual void keyEvent(bool pressedKeys[], int mp=1);
+    virtual void keyEvent(bool pressedKeys[]);
     virtual void mouseEvent(float x, float pitch);
 
     virtual glm::vec3 getOrientation() const;
