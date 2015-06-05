@@ -9,6 +9,7 @@
 #include <GL/glu.h>
 
 #include "vobject.h"
+#include "vmodel.h"
 #include "camera.h"
 #include "floorgrid.h"
 #include "cube.h"
@@ -37,6 +38,7 @@ private:
 
     camera cam;
     cube k;
+    vModel m;
 //    cube o[10];
     floorGrid floor;
 

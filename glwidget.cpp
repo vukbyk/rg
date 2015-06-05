@@ -31,26 +31,36 @@ GLWidget::GLWidget(QWidget *parent) : QGLWidget(parent)
 
 void GLWidget::initializeGL()
 {
+
     glClearColor(.2,.2,.2, 1);
+//    glClearColor(0,0,0, 1);
     glEnable(GL_DEPTH_TEST);
-    glEnable(GL_LIGHT0);
     glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+
+    float dif[]= {1,1,1,1};
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, dif);
+
     glEnable(GL_COLOR_MATERIAL);
+//    m.init();
 }
 
 
 void GLWidget::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-//    glLoadIdentity();
-
     floor.draw();
-    k.draw();
-    k.keyEvent(pressedKeys);
+////    k.draw();
+//    k.keyEvent(pressedKeys);
+    m.draw();
+    m.keyEvent(pressedKeys);
     cam.keyEvent(pressedKeys);
     cam.mouseEvent(mouseX, mouseY);
     cam.draw();
+    glLoadIdentity();
+    float pos[]= {2,2, 3,1};
+    glLightfv(GL_LIGHT0, GL_POSITION, pos);
+    float rot[]= {-2,-2,-3,1};
 }
 
 void GLWidget::resizeGL(int w, int h)

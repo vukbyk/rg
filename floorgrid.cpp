@@ -35,6 +35,7 @@ void floorGrid::draw()
 //    std::cout<<"rgb: "<<r<<g<<b<<std::endl;
     glLineWidth(3);
     glBegin(GL_LINES);
+        glNormal3f(0,1,0);
         glVertex3f(-span, 0, 0);
         glVertex3f(span, 0, 0);
         glVertex3f(0, 0,-span);

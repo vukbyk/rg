@@ -10,8 +10,8 @@ camera::camera()
     width=0;
     height=0;
     angle=glm::radians(45.f);
-    near=0.1f;
-    far=100.f;
+    near=1.f;
+    far=50.f;
 }
 
 camera::camera(float a, float n=.1f, float f=100.f)

@@ -19,7 +19,8 @@ SOURCES += main.cpp\
     floorgrid.cpp \
     vobject.cpp \
     camera.cpp \
-    cube.cpp
+    cube.cpp \
+    vmodel.cpp
 
 HEADERS  += mainwindow.h \
     glwidget.h \
@@ -27,12 +28,16 @@ HEADERS  += mainwindow.h \
     vobject.h \
     camera.h \
     cube.h \
+    vmodel.h
 
-LIBS     += -lglut -lGLU \
+LIBS     += \
+    -lglut \
+    -lGLU \
     -lBulletDynamics \
     -lBulletCollision \
     -lBulletSoftBody \
-    -lLinearMath
+    -lLinearMath \
+    -lassimp
 
 FORMS    += mainwindow.ui
 
