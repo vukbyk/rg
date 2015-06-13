@@ -22,11 +22,11 @@ GLWidget::GLWidget(QWidget *parent) : QGLWidget(parent)
     }
 //    k.p.z=-1;
 //    k.tm[3][2]=-1;
-
+//    cam.setNear(1.5);
+//    cam.setFar(20);
     cam.setAngle(60);
     cam.translate(vec3(0,-1,-4));
 //    cam.lookAt(vec3(0.f,2.f,5.f), vec3(0.f,0.f,0.f), vec3(0.f,1.f,0.f));
-
 }
 
 void GLWidget::initializeGL()
@@ -35,20 +35,35 @@ void GLWidget::initializeGL()
     glClearColor(.2,.2,.2, 1);
 //    glClearColor(0,0,0, 1);
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_TEXTURE_2D);
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
 
     float dif[]= {1,1,1,1};
     glLightfv(GL_LIGHT0, GL_DIFFUSE, dif);
 
-    glEnable(GL_COLOR_MATERIAL);
-//    m.init();
+//    glEnable(GL_COLOR_MATERIAL);
+    m.init();
 }
 
 
 void GLWidget::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+//    glLoadIdentity();
+//    glBindTexture(GL_TEXTURE_2D, m.idTexture);
+//    glBegin(GL_QUADS);
+//            glTexCoord2f(0.0,1.0);
+//            glVertex3f(-2.0,2.0,0.0);
+//            glTexCoord2f(0.0,0.0);
+//            glVertex3f(-2.0,-2.0,0.0);
+//            glTexCoord2f(1.0,0.0);
+//            glVertex3f(2.0,-2.0,0.0);
+//            glTexCoord2f(1.0,1.0);
+//            glVertex3f(2.0,2.0,0.0);
+//    glEnd();
+
     floor.draw();
 ////    k.draw();
 //    k.keyEvent(pressedKeys);
@@ -58,9 +73,10 @@ void GLWidget::paintGL()
     cam.mouseEvent(mouseX, mouseY);
     cam.draw();
     glLoadIdentity();
-    float pos[]= {2,2, 3,1};
+    float pos[]= {2, 2, 3, 1};
     glLightfv(GL_LIGHT0, GL_POSITION, pos);
-    float rot[]= {-2,-2,-3,1};
+//    float rot[]= {-2,-2,-3, 1};
+
 }
 
 void GLWidget::resizeGL(int w, int h)

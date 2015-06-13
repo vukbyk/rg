@@ -42,6 +42,9 @@ private:
 //    cube o[10];
     floorGrid floor;
 
+    unsigned int tex;
+
+
     void keyReleaseEvent(QKeyEvent *event);
     void keyPressEvent(QKeyEvent*);
 

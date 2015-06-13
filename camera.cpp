@@ -10,11 +10,11 @@ camera::camera()
     width=0;
     height=0;
     angle=glm::radians(45.f);
-    near=1.f;
-    far=50.f;
+    near=0.5f;
+    far=100.f;
 }
 
-camera::camera(float a, float n=.1f, float f=100.f)
+camera::camera(float a, float n=.5f, float f=100.f)
 
 {
     angle=glm::radians(a);
@@ -27,7 +27,7 @@ void camera::draw()
 //    glViewport(0.f, 0.f , width, height);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(45, (float)width/height, 0.0001,100.0);
+    gluPerspective(45, (float)width/height, near, far);
 
 //    glMatrixMode(GL_MODELVIEW);
 //    glLoadIdentity();

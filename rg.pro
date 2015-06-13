@@ -37,7 +37,9 @@ LIBS     += \
     -lBulletCollision \
     -lBulletSoftBody \
     -lLinearMath \
-    -lassimp
+    -lassimp \
+    -lSDL \
+    -lSDL_image
 
 FORMS    += mainwindow.ui
 

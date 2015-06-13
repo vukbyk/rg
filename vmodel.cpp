@@ -4,7 +4,7 @@ vModel::vModel()
 {
     Assimp::Importer importer;
     //aiProcessPreset_TargetRealtime_Fast has the configs you'll need
-    const aiScene *scene = importer.ReadFile("../models/gyrocopter_02.obj", aiProcessPreset_TargetRealtime_Fast);
+    const aiScene *scene = importer.ReadFile("../models/flyingmachine.obj", aiProcessPreset_TargetRealtime_Fast);
     //assuming you only want the first mesh
     aiMesh *mesh = scene->mMeshes[0];
 
@@ -39,13 +39,13 @@ vModel::vModel()
     vertexArray-=mesh->mNumFaces*3*3;
 
 
+
 }
 
 void vModel::draw()
 {
 
-    init();
-
+//    init();
 
     glLoadMatrixf(&tm[0][0]);
 //    glBegin(GL_TRIANGLES);
@@ -62,15 +62,32 @@ void vModel::draw()
 
 void vModel::init()
 {
+    loadTexture("../models/flyingmachine_FLYINGMACHINECREATURE.png");
     glNewList(1, GL_COMPILE);
-
         glBegin(GL_TRIANGLES);
-            glColor3f(1,.5,0);
-            for(int i=0; i < numVerts*3; i+=3)
+//            glColor3f(1,.5,0);
+//        glMaterialfv();
+            for(int i=0; i < numVerts; i++)
             {
-                glNormal3f(normalArray[i],normalArray[i+1],normalArray[i+2]);
-                glVertex3f(vertexArray[i],vertexArray[i+1],vertexArray[i+2]);
+                glTexCoord2d(uvArray[2*i], uvArray[2*i+1]);
+                glNormal3f(normalArray[3*i],normalArray[3*i+1],normalArray[3*i+2]);
+                glVertex3f(vertexArray[3*i],vertexArray[3*i+1],vertexArray[3*i+2]);
             }
         glEnd();
     glEndList();
+}
+
+void vModel::loadTexture(const char* filename)
+{
+        SDL_Surface* img = IMG_Load(filename);
+        if (!img)
+        {
+            printf("Error: \"%s\"\n",SDL_GetError());
+        }
+        glGenTextures(1, &idTexture);
+        glBindTexture(GL_TEXTURE_2D, idTexture);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, img->w, img->h, 0, GL_RGB, GL_UNSIGNED_INT_8_8_8_8, img->pixels);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        SDL_FreeSurface(img);
 }
