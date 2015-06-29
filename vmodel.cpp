@@ -2,9 +2,48 @@
 
 vModel::vModel()
 {
+}
+
+void vModel::draw()
+{
+
+//    init();
+
+//    glLoadMatrixf(&tm[0][0]);
+    glLoadMatrixf(&getWorldTM()[0][0]);
+//    glBegin(GL_TRIANGLES);
+//        glColor3f(1,.5,0);
+//        for(int i=0; i < numVerts*3; i+=3)
+//        {
+//            glNormal3f(normalArray[i],normalArray[i+1],normalArray[i+2]);
+//            glVertex3f(vertexArray[i],vertexArray[i+1],vertexArray[i+2]);
+//        }
+//    glEnd();
+    glCallList(1);
+
+}
+
+void vModel::init()
+{
+    loadModel("../models/gyroavgnorm.obj");
+    loadTexture("../models/gyrocopter.png");
+    glNewList(1, GL_COMPILE);
+        glBegin(GL_TRIANGLES);
+            for(int i=0; i < numVerts; i++)
+            {
+                glTexCoord2d(uvArray[2*i], 1-uvArray[2*i+1]);
+                glNormal3f(normalArray[3*i],normalArray[3*i+1],normalArray[3*i+2]);
+                glVertex3f(vertexArray[3*i],vertexArray[3*i+1],vertexArray[3*i+2]);
+            }
+        glEnd();
+    glEndList();
+}
+
+void vModel::loadModel(const char* modelFile)
+{
     Assimp::Importer importer;
     //aiProcessPreset_TargetRealtime_Fast has the configs you'll need
-    const aiScene *scene = importer.ReadFile("../models/gyroavgnorm.obj", aiProcessPreset_TargetRealtime_Fast);
+    const aiScene *scene = importer.ReadFile(modelFile, aiProcessPreset_TargetRealtime_Fast);
     //assuming you only want the first mesh
     aiMesh *mesh = scene->mMeshes[0];
 
@@ -37,48 +76,11 @@ vModel::vModel()
     uvArray-=mesh->mNumFaces*3*2;
     normalArray-=mesh->mNumFaces*3*3;
     vertexArray-=mesh->mNumFaces*3*3;
-
-
-
 }
 
-void vModel::draw()
+void vModel::loadTexture(const char* textureFile)
 {
-
-//    init();
-
-    glLoadMatrixf(&tm[0][0]);
-//    glBegin(GL_TRIANGLES);
-//        glColor3f(1,.5,0);
-//        for(int i=0; i < numVerts*3; i+=3)
-//        {
-//            glNormal3f(normalArray[i],normalArray[i+1],normalArray[i+2]);
-//            glVertex3f(vertexArray[i],vertexArray[i+1],vertexArray[i+2]);
-//        }
-//    glEnd();
-    glCallList(1);
-
-}
-
-void vModel::init()
-{
-    loadTexture("../models/gyrocopter.png");
-    glNewList(1, GL_COMPILE);
-        glBegin(GL_TRIANGLES);
-//        glMaterialfv();
-            for(int i=0; i < numVerts; i++)
-            {
-                glTexCoord2d(uvArray[2*i], 1-uvArray[2*i+1]);
-                glNormal3f(normalArray[3*i],normalArray[3*i+1],normalArray[3*i+2]);
-                glVertex3f(vertexArray[3*i],vertexArray[3*i+1],vertexArray[3*i+2]);
-            }
-        glEnd();
-    glEndList();
-}
-
-void vModel::loadTexture(const char* filename)
-{
-        SDL_Surface* img = IMG_Load(filename);
+        SDL_Surface* img = IMG_Load(textureFile);
         if (!img)
         {
             printf("Error: \"%s\"\n",SDL_GetError());

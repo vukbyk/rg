@@ -17,31 +17,40 @@ protected:
 public:
     glm::mat4x4 tm;
     float roll, yaw, pitch;
+    vObject *parent;
 
 public:
     vObject();
-    void draw();
+    virtual void init();
+    virtual void draw();
     virtual void translate(glm::vec3 position);
     virtual void rotate(glm::vec3 axis);
     virtual void keyEvent(bool pressedKeys[]);
     virtual void mouseEvent(float x, float pitch);
 
-    virtual glm::vec3 getOrientation() const;
-    virtual void setOrientation(glm::vec3 rotation);
+    virtual glm::vec3 getLocalOrientation() const;
+    virtual void setLocalOrientation(glm::vec3 rotation);
 
-    virtual glm::vec3 getPosition() const;
+    virtual glm::vec3 getLocalPosition() const;
 
-    float getYaw() const;
-    void setYaw(float value);
+    float getLocalYaw() const;
+    void setLocalYaw(float value);
 
-    float getPitch() const;
-    void setPitch(float value);
+    float getLocalPitch() const;
+    void setLocalPitch(float value);
 
-    float getRoll() const;
-    void setRoll(float value);
+    float getLocalRoll() const;
+    void setLocalRoll(float value);
 
-    glm::mat4x4 getTM() const;
+
+
+    glm::mat4x4 getLocalTM() const;
     void setTM(const glm::mat4x4 &value);
+
+    glm::mat4x4 getWorldTM() const;
+
+    vObject *getParent() const;
+    void setParent(vObject *value);
 };
 
 #endif // MOBJECT_H

@@ -19,9 +19,10 @@ public:
     unsigned int idTexture;
 
     vModel();
-    void draw();
-    void init();
-    void loadTexture(const char *filename);
+    virtual void draw();
+    virtual void init();
+    void loadTexture(const char *textureFile);
+    void loadModel(const char* modelFile);
 };
 
 #endif // VMODEL_H

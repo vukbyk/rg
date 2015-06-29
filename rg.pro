@@ -20,7 +20,9 @@ SOURCES += main.cpp\
     vobject.cpp \
     camera.cpp \
     cube.cpp \
-    vmodel.cpp
+    vmodel.cpp \
+    vrigidbody.cpp \
+    vworld.cpp
 
 HEADERS  += mainwindow.h \
     glwidget.h \
@@ -28,7 +30,9 @@ HEADERS  += mainwindow.h \
     vobject.h \
     camera.h \
     cube.h \
-    vmodel.h
+    vmodel.h \
+    vrigidbody.h \
+    vworld.h
 
 LIBS     += \
     -lglut \

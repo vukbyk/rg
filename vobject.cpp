@@ -6,13 +6,28 @@
 using namespace glm;
 using namespace std;
 
+vObject *vObject::getParent() const
+{
+    return parent;
+}
+
+void vObject::setParent(vObject *value)
+{
+    parent = value;
+}
 vObject::vObject()
 {
     tm=mat4x4(1);
     yaw=pitch=roll=0;
+    parent=NULL;
 }
 
-//void vObject::draw();
+void vObject::init()
+{
+
+}
+
+void vObject::draw(){}
 
 void vObject::translate(vec3 position)
 {
@@ -27,6 +42,7 @@ void vObject::rotate(vec3 rot)
 //    v[2]=transforamtion[3][2];
 //    transforamtion=mat4x4(1);
 
+//    parent=NULL;
     rot*=1;
     yaw+=rot.x;
     pitch+=rot.y;
@@ -56,6 +72,81 @@ void vObject::rotate(vec3 rot)
 //    tm*=eulerAngleZ(pitch);
 
 }
+
+void vObject::mouseEvent(float x, float y)
+{
+    this->rotate(vec3(radians(x) ,0.f ,radians(y)));
+}
+
+glm::vec3 vObject::getLocalOrientation() const
+{
+    return glm::vec3(yaw, pitch, roll);
+}
+
+glm::mat4x4 vObject::getLocalTM() const
+{
+    return tm;
+}
+
+void vObject::setTM(const glm::mat4x4 &value)
+{
+    tm = value;
+}
+
+mat4x4 vObject::getWorldTM() const
+{
+
+    if(parent!=NULL)
+    {
+        return parent->getWorldTM()*getLocalTM();
+                    cout<<"world"<<endl;
+    }
+    else
+        return getLocalTM();
+}
+
+void vObject::setLocalOrientation(glm::vec3 axis)
+{
+    yaw=axis.x;
+    pitch=axis.y;
+    roll=axis.z;
+}
+
+vec3 vObject::getLocalPosition() const
+{
+    return vec3(tm[3][0], tm[3][1], tm[3][2]);
+}
+
+float vObject::getLocalYaw() const
+{
+    return yaw;
+}
+
+void vObject::setLocalYaw(float value)
+{
+    yaw = value;
+}
+
+float vObject::getLocalPitch() const
+{
+    return roll;
+}
+
+void vObject::setLocalPitch(float value)
+{
+    roll = value;
+}
+
+float vObject::getLocalRoll() const
+{
+    return pitch;
+}
+
+void vObject::setLocalRoll(float value)
+{
+    pitch = value;
+}
+
 
 void vObject::keyEvent(bool pressedKeys[])
 {
@@ -118,66 +209,4 @@ void vObject::keyEvent(bool pressedKeys[])
 //    if(temp.size() == 0)
 //    temp = "none";
     //    cout << "currently Pressed Keys are: "<< temp.toUtf8().constData()<< endl;
-}
-
-void vObject::mouseEvent(float x, float y)
-{
-    this->rotate(vec3(radians(x) ,0.f ,radians(y)));
-}
-
-glm::vec3 vObject::getOrientation() const
-{
-    return glm::vec3(yaw, pitch, roll);
-}
-
-glm::mat4x4 vObject::getTM() const
-{
-    return tm;
-}
-
-void vObject::setTM(const glm::mat4x4 &value)
-{
-    tm = value;
-}
-
-void vObject::setOrientation(glm::vec3 axis)
-{
-    yaw=axis.x;
-    pitch=axis.y;
-    roll=axis.z;
-}
-
-vec3 vObject::getPosition() const
-{
-    return vec3(tm[3][0], tm[3][1], tm[3][2]);
-}
-
-float vObject::getYaw() const
-{
-    return yaw;
-}
-
-void vObject::setYaw(float value)
-{
-    yaw = value;
-}
-
-float vObject::getPitch() const
-{
-    return roll;
-}
-
-void vObject::setPitch(float value)
-{
-    roll = value;
-}
-
-float vObject::getRoll() const
-{
-    return pitch;
-}
-
-void vObject::setRoll(float value)
-{
-    pitch = value;
 }

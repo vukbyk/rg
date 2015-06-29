@@ -32,7 +32,7 @@ void camera::draw()
 //    glMatrixMode(GL_MODELVIEW);
 //    glLoadIdentity();
 //    glLoadIdentity();
-    glMultMatrixf(&getTM()[0][0]);
+    glMultMatrixf(&getLocalTM()[0][0]);
 //      glRotatef(0,0,1,0);
 
 //    setTransforamtion();
@@ -53,7 +53,7 @@ void camera::setAspect(int w, int h)
 }
 
 
-glm::mat4x4 camera::getTM()
+glm::mat4x4 camera::getLocalTM()
 {
 //    setTransforamtion();
 
@@ -78,7 +78,7 @@ glm::mat4x4 camera::getTM()
     temp=glm::rotate(temp, roll, vec3(0,0,1));
     temp=glm::rotate(temp, pitch, vec3(0,1,0));
     tm[3]+=temp[3];
-    temp=glm::translate(temp, getPosition());
+    temp=glm::translate(temp, getLocalPosition());
 //    temp=glm::translate(temp, vec3(tm[3][0], tm[3][1], tm[3][2]));
 
 //    tm=temp;

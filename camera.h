@@ -13,7 +13,7 @@ public:
     void lookAt(glm::vec3 eye, glm::vec3 center, glm::vec3 up);
     void setAspect(int w, int h);
 
-    glm::mat4x4 getTM();
+    glm::mat4x4 getLocalTM();
     void setTM();
 
     virtual void rotate(glm::vec3 rot);

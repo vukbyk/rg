@@ -10,7 +10,8 @@ void cube::draw()
 //    glMatrixMode(GL_MODELVIEW);
 //        glLoadIdentity();
         glPushMatrix();
-        glLoadMatrixf(&tm[0][0]);
+        glLoadMatrixf(&getWorldTM()[0][0]);
+//        glLoadMatrixf(&tm[0][0]);
 //            glTranslated(getPosition().x, getPosition().y, getPosition().z);
 //            glRotatef(yaw, 1,0,0);
 //            glRotatef(roll, 0,0,1);
