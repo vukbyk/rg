@@ -11,10 +11,10 @@ camera::camera()
     height=0;
     angle=glm::radians(45.f);
     near=0.5f;
-    far=100.f;
+    far=500.f;
 }
 
-camera::camera(float a, float n=.5f, float f=100.f)
+camera::camera(float a, float n=.5f, float f=5000.f)
 
 {
     angle=glm::radians(a);
@@ -24,21 +24,35 @@ camera::camera(float a, float n=.5f, float f=100.f)
 
 void camera::draw()
 {
-//    glViewport(0.f, 0.f , width, height);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluPerspective(45, (float)width/height, near, far);
 
-//    glMatrixMode(GL_MODELVIEW);
-//    glLoadIdentity();
-//    glLoadIdentity();
-    glMultMatrixf(&getLocalTM()[0][0]);
-//      glRotatef(0,0,1,0);
+    //    glViewport(0.f, 0.f , width, height);
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        gluPerspective(45, (float)width/height, near, far);
 
-//    setTransforamtion();
-//    glMultMatrixf(&transforamtion[0][0]);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
+    //    glMatrixMode(GL_MODELVIEW);
+    //    glLoadIdentity();
+    //    glLoadIdentity();
+    if(parent==NULL)
+    {
+        glMultMatrixf(&getLocalTM()[0][0]);
+    //      glRotatef(0,0,1,0);
+
+    //    setTransforamtion();
+    //    glMultMatrixf(&transforamtion[0][0]);
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+    }
+    else
+    {
+        glMultMatrixf(&(getLocalTM()*glm::inverse(parent->getLocalTM()))[0][0]);
+    //      glRotatef(0,0,1,0);
+
+    //    setTransforamtion();
+    //    glMultMatrixf(&transforamtion[0][0]);
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+    }
 }
 
 void camera::lookAt(vec3 eye, vec3 center, vec3 up)
@@ -162,36 +176,6 @@ void camera::keyEvent(bool pressedKeys[])
         case '-':
             translate(vec3(0.f, .0f, mov));
             break;
-//        case 'D':
-//            translate(vec3(mov, 0.f, 0.f));
-//            break;
-//        case 'A':
-            translate(vec3(-mov, 0.f, 0.f));
-            break;
-//        case 'R':
-//            translate(vec3(0.f, mov, 0.f));
-//            break;
-//        case 'F':
-//            translate(vec3(0.f, -mov, 0.f));
-//            break;
-//        case 'Y':
-//            rotate(vec3(ang, 0.f, 0.f));
-//            break;
-//        case 'H':
-//            rotate(vec3(-ang, 0.f, 0.f));
-//            break;
-//        case 'G':
-//            rotate(vec3(0.f, ang, 0.f));
-//            break;
-//        case 'J':
-//            rotate(vec3(0.f, -ang, 0.f));
-//            break;
-//        case 'Q':
-//            rotate(vec3(0.f, 0.f, ang));
-//            break;
-//        case 'E':
-//            rotate(vec3(0.f, 0.f,-ang));
-//            break;
         default:
             break;
         }

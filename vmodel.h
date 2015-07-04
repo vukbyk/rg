@@ -11,7 +11,6 @@
 class vModel : public vObject
 {
 public:
-
     float *vertexArray;
     float *normalArray;
     float *uvArray;

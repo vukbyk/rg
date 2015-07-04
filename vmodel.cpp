@@ -25,8 +25,8 @@ void vModel::draw()
 
 void vModel::init()
 {
-    loadModel("../models/gyroavgnorm.obj");
-    loadTexture("../models/gyrocopter.png");
+    loadModel("../models/trup.obj");
+    loadTexture("../models/trup.jpg");
     glNewList(1, GL_COMPILE);
         glBegin(GL_TRIANGLES);
             for(int i=0; i < numVerts; i++)

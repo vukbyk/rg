@@ -17,6 +17,9 @@ GLWidget::GLWidget(QWidget *parent) : QGLWidget(parent)
     lastRotateX=lastRotateY=lastRotateZ=-1;
 
     setFocusPolicy(Qt::StrongFocus);
+    setFocus( Qt::PopupFocusReason );
+    setEnabled( true );
+
 
     mouseX=mouseY=0;
     for(int i =0; i < 256; i++)
@@ -28,7 +31,7 @@ GLWidget::GLWidget(QWidget *parent) : QGLWidget(parent)
 //    cam.setNear(1.5);
 //    cam.setFar(20);
     cam.setAngle(60);
-    cam.translate(vec3(0,-1,-4));
+    cam.translate(vec3(0,-2,-2));
 //    cam.lookAt(vec3(0.f,2.f,5.f), vec3(0.f,0.f,0.f), vec3(0.f,1.f,0.f));
 }
 
@@ -47,7 +50,9 @@ void GLWidget::initializeGL()
 //    glEnable(GL_COLOR_MATERIAL);
 //    m.init();
     vrb.init();
-    k.setParent(&vrb);
+//    k.setParent(&vrb);
+
+    cam.setParent(&vrb);
 
 //  Bullet objekti inicijalizacija
 
@@ -56,8 +61,8 @@ void GLWidget::initializeGL()
 //    dispatcher=new btCollisionDispatcher(collisionConfig);
 //    broadphase=new btDbvtBroadphase();
 //    solver=new btSequentialImpulseConstraintSolver();
-    world=new btDiscreteDynamicsWorld(dispatcher,broadphase,solver,collisionConfig);
-    world->setGravity(btVector3(0,-9.81,0));	//gravity on Earth
+//    world=new btDiscreteDynamicsWorld(dispatcher,broadphase,solver,collisionConfig);
+//    world->setGravity(btVector3(0,-9.81,0));	//gravity on Earth
 
     //similar to createSphere
     btTransform t;
@@ -68,60 +73,52 @@ void GLWidget::initializeGL()
     btRigidBody::btRigidBodyConstructionInfo info(0.0,motion,plane);
     btRigidBody* body=new btRigidBody(info);
     body->setRestitution(1);
-    world->addRigidBody(body);
-//    bodies.push_back(body);
+    world.addRigidBody(body);
 
 //    addSphere(0.3,0,6,0,1.0);	//add a new sphere above the ground
 
     vRigidBody *vbody=&vrb;//new vRigidBody();
     vbody->translate(btVector3(0,2,0));
-    world->addRigidBody(vbody);	//and let the world know about it
-    bodies.push_back(vbody);	//to be easier to clean, I store them a vector
+    world.addRigidBody(vbody);	//and let the world know about it
+    world.bodies.push_back(vbody);	//to be easier to clean, I store them a vector
     vbody->setRestitution(.5);
 }
 
 
 void GLWidget::paintGL()
 {
+    keyEvent();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     cam.keyEvent(pressedKeys);
-    cam.mouseEvent(mouseX, mouseY);
+//    cam.mouseEvent(mouseX, mouseY);
     cam.draw();
 
     floor.draw();
-    k.draw();
 
-    k.keyEvent(pressedKeys);
 //    m.draw();
-    m.keyEvent(pressedKeys);
+//    m.keyEvent(pressedKeys);
 
     glLoadIdentity();
     float pos[]= {2, 2, 3, 1};
     glLightfv(GL_LIGHT0, GL_POSITION, pos);
 //    float rot[]= {-2,-2,-3, 1};
-    world->stepSimulation(1/60.0);
+    world.world->stepSimulation(1/60.0);
 
 //  Bullet crtanje
-    for(uint i=0, bs=bodies.size();i<bs;i++)
+    for(uint i=0, bs=world.bodies.size();i<bs;i++)
     {
 //        if(bodies[i]->getCollisionShape()->getShapeType()==STATIC_PLANE_PROXYTYPE)
 //            renderPlane(bodies[i]);
 //        else if(bodies[i]->getCollisionShape()->getShapeType()==SPHERE_SHAPE_PROXYTYPE)
-            renderSphere(bodies[i]);
-
+            renderSphere(world.bodies[i]);
+            world.bodies[i]->draw();
 //            bodies[i]->draw();
     }
-    vRigidBody* b=bodies[0];
-    btTransform t;
-    b->getMotionState()->getWorldTransform(t);
-    glm::mat4x4 mat(1);
-//    t.getOpenGLMatrix(glm::value_ptr(b->tm));
-    t.getOpenGLMatrix(glm::value_ptr(mat));
-    b->tm=mat;
+//    vRigidBody* b=world.bodies[0];
 //    b->setAngularVelocity(btVector3(1,2,3));
-
-    b->setMassProps(10,btVector3(100,1,0));
-    b->draw();
+//    b->setMassProps(10,btVector3(100,1,0));
+//    b->draw();
+//    k.draw();
 
 }
 
@@ -129,15 +126,6 @@ void GLWidget::resizeGL(int w, int h)
 {
     glViewport(0.f, 0.f , w, h);
     cam.setAspect(w,h);
-}
-
-void GLWidget::keyPressEvent(QKeyEvent *event)
-{
-    int currKey = event->key();
-    if(currKey >= 0 && currKey < 256)
-    {
-        pressedKeys[event->key()] = true;
-    }
 }
 
 void GLWidget::mousePressEvent(QMouseEvent *event)
@@ -159,6 +147,15 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event)
     }
 }
 
+void GLWidget::keyPressEvent(QKeyEvent *event)
+{
+    int currKey = event->key();
+    if(currKey >= 0 && currKey < 256)
+    {
+        pressedKeys[event->key()] = true;
+    }
+}
+
 void GLWidget::keyReleaseEvent(QKeyEvent *event)
 {
     int currKey = event->key();
@@ -168,6 +165,50 @@ void GLWidget::keyReleaseEvent(QKeyEvent *event)
     }
 }
 
+void GLWidget::keyEvent()
+{
+
+//    force=b->getCenterOfMassTransform().getRotation()
+//    force = force.rotate(btVector3(0,1,0), b->getOrientation().getY());
+    for(int i =0; i< 256; i++)
+    {
+        float force=100;
+        vRigidBody* b=world.bodies[0];
+
+//        btVector3 RelativeForce=btVector3(0,0,10);
+//        btMatrix3x3& rotation = b->getWorldTransform().getBasis();
+//        btVector3 force=rotation*relativeForce;
+////        btVector3 force = b->getWorldTransform().getBasis() * btVector3(0,0,10);
+
+        if(pressedKeys[i])
+//            cout << "Key: "<<(char) (i)<< endl;
+            switch ((char)(i))
+            {
+            case char(Qt::Key_W):
+                b->activate();
+                b->applyCentralForce(-(b->getWorldTransform().getBasis() * btVector3(0,0,force)));
+                break;
+            case char(Qt::Key_S):
+                b->activate();
+                b->applyCentralForce(b->getWorldTransform().getBasis() * btVector3(0,0,force));
+                break;
+            case Qt::Key_A:
+                b->activate();
+                b->applyTorque(btVector3(0,force,0));
+                break;
+            case Qt::Key_D:
+                b->activate();
+                b->applyTorque(btVector3(0,-force,0));
+                break;
+            case Qt::Key_Space:
+                b->activate();
+                b->applyForce(btVector3( 0.f, force, 0.f),btVector3(0,50,0));
+                break;
+            default:
+                break;
+            }
+    }
+}
 
 btRigidBody* GLWidget::addSphere(float rad,float x,float y,float z,float mass)
 {
@@ -184,7 +225,7 @@ btRigidBody* GLWidget::addSphere(float rad,float x,float y,float z,float mass)
 //    btRigidBody* body=new btRigidBody(info);	//let's create the body itself
     btRigidBody* body=new btRigidBody(btRigidBody::btRigidBodyConstructionInfo (1,new btDefaultMotionState(),new btSphereShape(.1)));
     body->translate(btVector3(x,y,z));
-    world->addRigidBody(body);	//and let the world know about it
+    world.addRigidBody(body);	//and let the world know about it
 //    bodies.push_back(body);	//to be easier to clean, I store them a vector
     body->setRestitution(.5);
     return body;

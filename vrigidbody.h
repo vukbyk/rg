@@ -10,6 +10,7 @@ public:
     vRigidBody();
 //    vRigidBody(btRigidBodyConstructionInfo info);
     void translate(btVector3 t) { btRigidBody::translate(t); };
+    void draw();
 };
 
 #endif // VRIGIDBODY_H

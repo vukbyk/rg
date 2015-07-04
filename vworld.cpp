@@ -9,3 +9,8 @@ vWorld::vWorld()
     world=new btDiscreteDynamicsWorld(dispatcher,broadphase,solver,collisionConfig);
     world->setGravity(btVector3(0,-9.81,0));	//gravity on Earth
 }
+
+void vWorld::addRigidBody(btRigidBody *body)
+{
+    world->addRigidBody(body);
+}

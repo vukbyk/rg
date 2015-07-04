@@ -17,6 +17,7 @@ public:
     std::vector<vRigidBody*> bodies;
 
     vWorld();
+    void addRigidBody(btRigidBody *body);
 };
 
 #endif // VWORLD_H

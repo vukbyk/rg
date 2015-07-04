@@ -59,11 +59,13 @@ private:
 //    std::vector<vRigidBody*> bodies;
 //Bullet objekti
 
-    void keyReleaseEvent(QKeyEvent *event);
-    void keyPressEvent(QKeyEvent*);
-
     void mouseMoveEvent(QMouseEvent *event);
     void mousePressEvent(QMouseEvent *event);
+
+    void keyReleaseEvent(QKeyEvent *event);
+    void keyPressEvent(QKeyEvent*);
+    void keyEvent();
+
 //signals:
 
 //public slots:
