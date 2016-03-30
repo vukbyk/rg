@@ -12,6 +12,10 @@ TARGET = rg
 TEMPLATE = app
 
 INCLUDEPATH += /usr/include/bullet
+#INCLUDEPATH += /usr/local/include/bullet
+#INCLUDEPATH +=  ../bullet/src \
+#                ../bullet/Extras/Serialize
+#                ../bullet/Extras
 
 SOURCES += main.cpp\
     mainwindow.cpp \
@@ -41,9 +45,13 @@ LIBS     += \
     -lBulletCollision \
     -lBulletSoftBody \
     -lLinearMath \
+    -lBulletWorldImporter \
     -lassimp \
     -lSDL \
-    -lSDL_image
+    -lSDL_image\
+    -lSDL2#\
+#    -lSDL2_image
+
 
 FORMS    += mainwindow.ui
 

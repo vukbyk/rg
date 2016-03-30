@@ -2,6 +2,11 @@
 #define VRIGIDBODY_H
 
 #include <bullet/btBulletDynamicsCommon.h>
+
+
+#include "vrigidbody.h"
+
+
 #include <vmodel.h>
 
 class vRigidBody : public btRigidBody, public vModel

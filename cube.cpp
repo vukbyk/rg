@@ -8,7 +8,7 @@ cube::cube()
 void cube::draw()
 {
 //    glMatrixMode(GL_MODELVIEW);
-//        glLoadIdentity();
+        glLoadIdentity();
         glPushMatrix();
         glLoadMatrixf(&getWorldTM()[0][0]);
 //        glLoadMatrixf(&tm[0][0]);

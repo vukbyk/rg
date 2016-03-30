@@ -52,7 +52,7 @@ void GLWidget::initializeGL()
     vrb.init();
 //    k.setParent(&vrb);
 
-    cam.setParent(&vrb);
+//    cam.setParent(&vrb);
 
 //  Bullet objekti inicijalizacija
 
@@ -202,7 +202,7 @@ void GLWidget::keyEvent()
                 break;
             case Qt::Key_Space:
                 b->activate();
-                b->applyForce(btVector3( 0.f, force, 0.f),btVector3(0,50,0));
+                b->applyForce(btVector3( 0.f, force*2, 0.f),btVector3(0,50,0));
                 break;
             default:
                 break;
